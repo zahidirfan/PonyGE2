@@ -9,11 +9,19 @@ import numpy as np
 
 
 class singlefit_multiobj(base_ff):
+    """
+    An example of a single fitness class that generates
+    two fitness values for multiobjective optimisation
+    """
+
     maximise = True
     multi_objective = True
+
     def __init__(self):
+
         # Initialise base fitness function class.
         super().__init__()
+
         # Set list of individual fitness functions.
         self.num_obj = 2
         dummyfit = base_ff()
@@ -23,6 +31,7 @@ class singlefit_multiobj(base_ff):
 
 
     def evaluate(self, ind, **kwargs):
+        """Dummy fitness function that generates 2 fitness values"""
         phenotype = ind.phenotype
         fitness = 0
         settings = {}
