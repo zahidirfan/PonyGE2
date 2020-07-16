@@ -60,8 +60,19 @@ def hinge(y, yhat):
     :return: The hinge loss.
     """
 
-    # NB not np.max. maximum does element-wise max
-    return np.sum(np.maximum(0, 1 - y * yhat))
+    # Deal with possibility of {-1, 1} or {0, 1} class label convention
+    y_vals = set(y)
+    # convert from {0, 1} to {-1, 1}
+    if 0 in y_vals:
+        y[y == 0] = -1
+
+    # Our definition of hinge loss cannot be used for multiclass
+    assert len(y_vals) == 2
+
+    # NB not np.max. maximum does element-wise max.  Also we use the
+    # mean hinge loss rather than sum so that the result doesn't
+    # depend on the size of the dataset.
+    return np.mean(np.maximum(0, 1 - y * yhat))
 
 # Set maximise attribute for hinge error metric.
 hinge.maximise = False
@@ -84,8 +95,21 @@ def f1_score(y, yhat):
     if not isinstance(yhat, np.ndarray) or len(yhat.shape) < 1:
         yhat = np.ones_like(y) * yhat
 
-    # convert real values to boolean with a zero threshold
+    # Deal with possibility of {-1, 1} or {0, 1} class label
+    # convention.  FIXME: would it be better to canonicalise the
+    # convention elsewhere and/or create user parameter to control it?
+    # See https://github.com/PonyGE/PonyGE2/issues/113.
+    y_vals = set(y)
+    # convert from {-1, 1} to {0, 1}
+    if -1 in y_vals:
+        y[y == -1] = 0
+
+    # We binarize with a threshold, so this cannot be used for multiclass
+    assert len(y_vals) == 2
+
+    # convert real values to boolean {0, 1} with a zero threshold
     yhat = (yhat > 0)
+
     with warnings.catch_warnings():
         # if we predict the same value for all samples (trivial
         # individuals will do so as described above) then f-score is
