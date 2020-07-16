@@ -19,4 +19,4 @@ FITNESS_FUNCTION:       supervised_learning.classification
 REPLACEMENT:            generational
 SELECTION:              tournament
 TOURNAMENT_SIZE:        2
-VERBOSE: False
+VERBOSE: 				False
