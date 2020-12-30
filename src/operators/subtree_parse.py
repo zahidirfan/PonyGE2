@@ -4,7 +4,7 @@ from itertools import zip_longest
 
 from algorithm.parameters import params
 from representation import individual, tree
-from utilities.representation.check_methods import get_output, generate_codon
+from utilities.representation.check_methods import generate_codon, get_output
 from utilities.stats import trackers
 
 
@@ -202,7 +202,8 @@ def reduce_trees():
                                         # Get portion of target string to match.
                                         end_point = aft + len(check)
 
-                                        target = params['TARGET'][aft:end_point]
+                                        target = params['TARGET'][
+                                                 aft:end_point]
 
                                         if target == check:
                                             # The current terminal matches the same
@@ -224,8 +225,8 @@ def reduce_trees():
                                                 # Recurse to find the next piece of
                                                 # the puzzle.
                                                 check_reductions(alt_cs, pre,
-                                                                     aft, idx,
-                                                                     children)
+                                                                 aft, idx,
+                                                                 children)
 
                                     elif child[1] == "NT":
                                         # Check to see if there are any snippets
@@ -250,12 +251,14 @@ def reduce_trees():
 
                                             # Increment appropriate phenotype
                                             # counter.
-                                            aft_c = aft + str_len[1] - str_len[0]
+                                            aft_c = aft + str_len[1] - str_len[
+                                                0]
 
                                             # Add to children.
                                             children[child_idx] = [match[2],
-                                                              trackers.snippets[
-                                                                  match[2]]]
+                                                                   trackers.snippets[
+                                                                       match[
+                                                                           2]]]
 
                                             if alt_cs:
                                                 # Recurse to find the next piece of
@@ -303,8 +306,8 @@ def reduce_trees():
                                                 # Recurse to find the next piece of
                                                 # the puzzle.
                                                 check_reductions(alt_cs, pre,
-                                                                     aft, idx,
-                                                                     children)
+                                                                 aft, idx,
+                                                                 children)
 
                                     elif child[1] == "NT":
                                         # Check to see if there are any snippets
@@ -329,12 +332,14 @@ def reduce_trees():
 
                                             # Increment appropriate phenotype
                                             # counter.
-                                            pre_c = pre - str_len[1] + str_len[0]
+                                            pre_c = pre - str_len[1] + str_len[
+                                                0]
 
                                             # Add to children.
                                             children[child_idx] = [match[2],
-                                                              trackers.snippets[
-                                                                  match[2]]]
+                                                                   trackers.snippets[
+                                                                       match[
+                                                                           2]]]
 
                                             if alt_cs:
                                                 # Recurse to find the next piece of
@@ -359,7 +364,8 @@ def reduce_trees():
                                         if child_idx > loc:
                                             # This T comes after the original NT.
                                             start_point = aft
-                                            end_point = start_point + len(check)
+                                            end_point = start_point + len(
+                                                check)
 
                                         else:
                                             # This T comes before the original NT.
@@ -398,8 +404,8 @@ def reduce_trees():
                                                 # Recurse to find the next piece of
                                                 # the puzzle.
                                                 check_reductions(alt_cs, pre,
-                                                                     aft, idx,
-                                                                     children)
+                                                                 aft, idx,
+                                                                 children)
 
                                     elif child[1] == "NT":
                                         # Check to see if there are any snippets
@@ -409,13 +415,15 @@ def reduce_trees():
                                         # Get portion of target string to match.
                                         if child_idx > loc:
                                             # This NT comes after the original NT.
-                                            matches = [v for v in sorted_keys if
+                                            matches = [v for v in sorted_keys
+                                                       if
                                                        v[0][0] == aft and
                                                        v[1] == child[0]]
 
                                         else:
                                             # This NT comes before the original NT.
-                                            matches = [v for v in sorted_keys if
+                                            matches = [v for v in sorted_keys
+                                                       if
                                                        v[0][1] == pre and
                                                        v[1] == child[0]]
 
@@ -434,24 +442,27 @@ def reduce_trees():
                                             if child_idx > loc:
                                                 # This NT comes after the original
                                                 # NT.
-                                                aft_c = aft + str_len[1] - str_len[0]
+                                                aft_c = aft + str_len[1] - \
+                                                        str_len[0]
 
                                             else:
                                                 # This NT comes before the original
                                                 # NT.
-                                                pre_c = pre - str_len[1] + str_len[0]
+                                                pre_c = pre - str_len[1] + \
+                                                        str_len[0]
 
                                             # Add to children.
                                             children[child_idx] = [match[2],
-                                                              trackers.snippets[
-                                                                  match[2]]]
+                                                                   trackers.snippets[
+                                                                       match[
+                                                                           2]]]
 
                                             if alt_cs:
                                                 # Recurse to find the next piece of
                                                 # the puzzle.
                                                 check_reductions(alt_cs, pre_c,
-                                                                     aft_c, idx,
-                                                                     children)
+                                                                 aft_c, idx,
+                                                                 children)
 
                             elif all([i != [] for i in children]):
                                 # We have compiled a full set of potential
@@ -529,8 +540,7 @@ def delete_snippet(self):
     """
 
     if self.parent and self.snippet and self.snippet in trackers.snippets and \
-        len(params['BNF_GRAMMAR'].concat_NTs[self.root]) == 1:
-
+            len(params['BNF_GRAMMAR'].concat_NTs[self.root]) == 1:
         # Delete this snippet as it's (hopefully) useless now.
         del trackers.snippets[self.snippet]
 
