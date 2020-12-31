@@ -422,7 +422,10 @@ def load_population(target):
                 # Get the phenotype.
                 phenotype = content[phen_idx]
 
-                # TODO: Current phenotype is read in as single-line only. Split is performed on "\n", meaning phenotypes that span multiple lines will not be parsed correctly. This must be fixed in later editions.
+                # TODO: Current phenotype is read in as single-line only.
+                #  Split is performed on "\n", meaning phenotypes that span
+                #  multiple lines will not be parsed correctly.
+                #  This must be fixed in later editions.
 
             elif "Genotype:" not in content:
                 # There is no explicit genotype or phenotype in the target

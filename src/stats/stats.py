@@ -216,7 +216,8 @@ def get_moo_stats(individuals, end):
 
                 save_plot_from_data(to_plot, plotname)
 
-            # TODO: PonyGE2 can currently only plot moo problems with 2 objectives.
+            # TODO: PonyGE2 can currently only plot moo problems with 2
+            #  objectives.
             # Check that the number of fitness objectives is not greater than 2
             if params['FITNESS_FUNCTION'].num_obj > 2:
                 s = "stats.stats.get_moo_stats\n" \

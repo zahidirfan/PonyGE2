@@ -160,9 +160,9 @@ def reduce_trees():
 
                         def check_reductions(alt_cs, pre, aft, idx, children):
                             """
-                            Given a list of the indexes of potential children, find
-                            snippets which match adjacent portions of the target
-                            string that can be used as these children.
+                            Given a list of the indexes of potential children,
+                            find snippets which match adjacent portions of the
+                            target string that can be used as these children.
 
                             :param alt_cs: An ordered list of indexes of
                             potential Terminals or Non Terminals to
@@ -178,8 +178,8 @@ def reduce_trees():
 
                             if idx < len(alt_cs):
 
-                                # Take the next available unexpanded item from the
-                                # list.
+                                # Take the next available unexpanded item
+                                # from the list.
                                 child_idx = alt_cs[idx]
                                 child = NTs[child_idx]
 
@@ -199,39 +199,43 @@ def reduce_trees():
                                         # Get output to check for match.
                                         check = child[0]
 
-                                        # Get portion of target string to match.
+                                        # Get portion of target string to
+                                        # match.
                                         end_point = aft + len(check)
 
                                         target = params['TARGET'][
                                                  aft:end_point]
 
                                         if target == check:
-                                            # The current terminal matches the same
-                                            # location on the target string.
+                                            # The current terminal matches
+                                            # the same location on the target
+                                            # string.
 
-                                            # Generate fake key for snippets dict.
+                                            # Generate fake key for snippets
+                                            # dict.
                                             key = str([aft, end_point])
 
                                             # Increment aft phenotype counter.
                                             aft += len(check)
 
-                                            # Create new tree from this terminal.
+                                            # Create new tree from this
+                                            # terminal.
                                             T_tree = tree.Tree(check, None)
 
                                             # Add to children.
                                             children[child_idx] = [key, T_tree]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre,
                                                                  aft, idx,
                                                                  children)
 
                                     elif child[1] == "NT":
-                                        # Check to see if there are any snippets
-                                        # which can be reduced to the current
-                                        # block.
+                                        # Check to see if there are any
+                                        # snippets which can be reduced to
+                                        # the current block.
 
                                         # Find all potential snippets which
                                         # match our criteria.
@@ -239,12 +243,14 @@ def reduce_trees():
                                                    v[0][0] == aft and
                                                    v[1] == child[0]]
 
-                                        # Create a copy of this marker otherwise
-                                        # each match will over-write it.
+                                        # Create a copy of this marker
+                                        # otherwise each match will
+                                        # over-write it.
                                         aft_c = copy(aft)
 
                                         for match in matches:
-                                            # Iterate over all potential matches.
+                                            # Iterate over all potential
+                                            # matches.
 
                                             # Calculate length of match string.
                                             str_len = match[0]
@@ -261,8 +267,8 @@ def reduce_trees():
                                                                            2]]]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre,
                                                                  aft_c, idx,
                                                                  children)
@@ -280,39 +286,43 @@ def reduce_trees():
                                         # Get output to check for match.
                                         check = child[0]
 
-                                        # Get portion of target string to match.
+                                        # Get portion of target string to
+                                        # match.
                                         start_point = pre - len(check)
 
                                         target = params['TARGET'][
                                                  start_point:pre]
 
                                         if target == check:
-                                            # The current terminal matches the same
-                                            # location on the target string.
+                                            # The current terminal matches
+                                            # the same location on the target
+                                            # string.
 
-                                            # Generate fake key for snippets dict.
+                                            # Generate fake key for snippets
+                                            # dict.
                                             key = str([start_point, pre])
 
                                             # Increment pre phenotype counter.
                                             pre -= len(check)
 
-                                            # Create new tree from this terminal.
+                                            # Create new tree from this
+                                            # terminal.
                                             T_tree = tree.Tree(check, None)
 
                                             # Add to children.
                                             children[child_idx] = [key, T_tree]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre,
                                                                  aft, idx,
                                                                  children)
 
                                     elif child[1] == "NT":
-                                        # Check to see if there are any snippets
-                                        # which can be reduced to the current
-                                        # block.
+                                        # Check to see if there are any
+                                        # snippets which can be reduced to
+                                        # the current block.
 
                                         # Find all potential snippets which
                                         # match our criteria.
@@ -320,12 +330,14 @@ def reduce_trees():
                                                    v[0][1] == pre and
                                                    v[1] == child[0]]
 
-                                        # Create a copy of this marker otherwise
-                                        # each match will over-write it.
+                                        # Create a copy of this marker
+                                        # otherwise each match will
+                                        # over-write it.
                                         pre_c = copy(pre)
 
                                         for match in matches:
-                                            # Iterate over all potential matches.
+                                            # Iterate over all potential
+                                            # matches.
 
                                             # Calculate length of match string.
                                             str_len = match[0]
@@ -342,15 +354,15 @@ def reduce_trees():
                                                                            2]]]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre_c,
                                                                  aft, idx,
                                                                  children)
 
                                 else:
-                                    # Our starting NT is somewhere in the middle
-                                    # of the proposed reduction.
+                                    # Our starting NT is somewhere in the
+                                    # middle of the proposed reduction.
 
                                     if child[1] == "T":
                                         # Then we can immediately check if this
@@ -360,15 +372,18 @@ def reduce_trees():
                                         # Get output to check for match.
                                         check = child[0]
 
-                                        # Get portion of target string to match.
+                                        # Get portion of target string to
+                                        # match.
                                         if child_idx > loc:
-                                            # This T comes after the original NT.
+                                            # This T comes after the
+                                            # original NT.
                                             start_point = aft
                                             end_point = start_point + len(
                                                 check)
 
                                         else:
-                                            # This T comes before the original NT.
+                                            # This T comes before the
+                                            # original NT.
                                             start_point = pre - len(check)
                                             end_point = pre
 
@@ -376,63 +391,71 @@ def reduce_trees():
                                                  start_point:end_point]
 
                                         if target == check:
-                                            # The current terminal matches the same
-                                            # location on the target string.
+                                            # The current terminal matches
+                                            # the same location on the
+                                            # target string.
 
                                             # Increment appropriate phenotype
                                             # counter.
                                             if child_idx > loc:
-                                                # This T comes after the original
-                                                # NT.
+                                                # This T comes after the
+                                                # original NT.
                                                 aft += len(check)
 
                                             else:
-                                                # This T comes before the original
-                                                # NT.
+                                                # This T comes before the
+                                                # original NT.
                                                 pre -= len(check)
 
-                                            # Generate fake key for snippets dict.
+                                            # Generate fake key for snippets
+                                            # dict.
                                             key = str([start_point, end_point])
 
-                                            # Create new tree from this terminal.
+                                            # Create new tree from this
+                                            # terminal.
                                             T_tree = tree.Tree(check, None)
 
                                             # Add to children.
                                             children[child_idx] = [key, T_tree]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre,
                                                                  aft, idx,
                                                                  children)
 
                                     elif child[1] == "NT":
-                                        # Check to see if there are any snippets
-                                        # which can be reduced to the current
-                                        # block.
+                                        # Check to see if there are any
+                                        # snippets which can be reduced to
+                                        # the current block.
 
-                                        # Get portion of target string to match.
+                                        # Get portion of target string to
+                                        # match.
                                         if child_idx > loc:
-                                            # This NT comes after the original NT.
+                                            # This NT comes after the
+                                            # original NT.
                                             matches = [v for v in sorted_keys
                                                        if
                                                        v[0][0] == aft and
                                                        v[1] == child[0]]
 
                                         else:
-                                            # This NT comes before the original NT.
+                                            # This NT comes before the
+                                            # original NT.
                                             matches = [v for v in sorted_keys
                                                        if
                                                        v[0][1] == pre and
                                                        v[1] == child[0]]
 
-                                        # Create copies of this markers otherwise
-                                        # each match will over-write them.
+                                        # Create copies of this markers
+                                        # otherwise each match will
+                                        # over-write them.
                                         pre_c, aft_c = copy(pre), copy(aft)
 
                                         for match in matches:
-                                            # Iterate over all potential matches.
+                                            # Iterate over all potential
+                                            # matches.
 
                                             # Calculate length of match string.
                                             str_len = match[0]
@@ -440,14 +463,14 @@ def reduce_trees():
                                             # Increment appropriate phenotype
                                             # counter.
                                             if child_idx > loc:
-                                                # This NT comes after the original
-                                                # NT.
+                                                # This NT comes after the
+                                                # original NT.
                                                 aft_c = aft + str_len[1] - \
                                                         str_len[0]
 
                                             else:
-                                                # This NT comes before the original
-                                                # NT.
+                                                # This NT comes before the
+                                                # original NT.
                                                 pre_c = pre - str_len[1] + \
                                                         str_len[0]
 
@@ -458,16 +481,16 @@ def reduce_trees():
                                                                            2]]]
 
                                             if alt_cs:
-                                                # Recurse to find the next piece of
-                                                # the puzzle.
+                                                # Recurse to find the next
+                                                # piece of the puzzle.
                                                 check_reductions(alt_cs, pre_c,
                                                                  aft_c, idx,
                                                                  children)
 
                             elif all([i != [] for i in children]):
                                 # We have compiled a full set of potential
-                                # children to reduce_trees. Generate a key and check
-                                # if it exists.
+                                # children to reduce_trees. Generate a key
+                                # and check if it exists.
                                 generate_key_and_check(pre, aft, reduce,
                                                        children)
 
@@ -482,7 +505,8 @@ def generate_key_and_check(pre, aft, reduce, children):
 
     :param pre: The start index of the overall snippet on the target string.
     :param aft: The end index of the overall snippet on the target string.
-    :param reduce: The information necessary to reduce_trees a list of snippets.
+    :param reduce: The information necessary to reduce_trees a list of
+    snippets.
     Includes the root NT that will form the new root node of the reduced
     snippet.
     :param children: A dictionary containing the derivation trees of all

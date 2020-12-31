@@ -46,7 +46,8 @@ class Worker(mp.Process):
                          not isinstance(value,
                                         ModuleType) and  # cannot be a module
                          key not in ['__builtins__',
-                                     'stop']})  # cannot be builtins or synchronized objects
+                                     'stop']})  # cannot be builtins or
+                    # synchronized objects
                 del help_globals
             else:
                 break
@@ -94,8 +95,9 @@ if __name__ == '__main__':
                 produce.get(block=True, timeout=message_dict['timeout'] * 10)
             except Empty:
                 # START: Used to terminate worker process if it does not return
-                # Possible reasons: OS X does not throw a MemoryError and might kill the worker itself
-                #                   worker just takes too long in general
+                # Possible reasons: OS X does not throw a MemoryError and
+                # might kill the worker itself worker just takes too long
+                # in general
                 p.terminate()
                 consume = mp.Queue()
                 produce = mp.Queue()

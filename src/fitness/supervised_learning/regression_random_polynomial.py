@@ -112,7 +112,8 @@ class Polynomial:
                                       for i, powi in enumerate(pows) if
                                       powi > 0)
             else:
-                return ""  # this term is a const so the coef on its own is enough
+                # this term is a const so the coef on its own is enough
+                return ""
 
         return " + ".join("%.3f%s" % (coef, s(pows))
                           for (coef, pows) in

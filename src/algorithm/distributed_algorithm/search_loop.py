@@ -23,7 +23,7 @@ def search_loop():
     agents = create_agents(params['AGENT_SIZE'],
                            params['INTERACTION_PROBABILITY'])
 
-    ## Multi-Agent based GE
+    # Multi-Agent based GE
     for generation in range(1, (params['GENERATIONS'] + 1)):
         stats['gen'] = generation
 

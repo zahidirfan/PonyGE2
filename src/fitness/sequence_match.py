@@ -150,7 +150,7 @@ class sequence_match(base_ff):
 
     def __init__(self):
         """
-        Initilise class instance
+        Initialise class instance
         """
         # Initialise base fitness function class.
         super().__init__()

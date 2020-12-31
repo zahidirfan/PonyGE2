@@ -391,7 +391,7 @@ class Grammar(object):
 
             # Find shortest path to a terminal for all production choices for
             # the current NT. The shortest path will be the minimum of the
-            # maximum paths to a T for each choice over all chocies.
+            # maximum paths to a T for each choice over all choices.
             min_path = min([choice['max_path'] for choice in choices])
 
             # Set the minimum path in the self.non_terminals dict.

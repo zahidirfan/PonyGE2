@@ -321,13 +321,15 @@ def pi_grow(tree, max_depth):
             # single branch has reached the full depth. Only select recursive
             # choices.
 
-            # Find which productions can be used based on the derivation method.
+            # Find which productions can be used based on the derivation
+            # method.
             available = legal_productions("full", remaining_depth, node.root,
                                           productions['choices'])
         else:
             # Any production choices can be made.
 
-            # Find which productions can be used based on the derivation method.
+            # Find which productions can be used based on the derivation
+            # method.
             available = legal_productions("random", remaining_depth, node.root,
                                           productions['choices'])
 

@@ -59,7 +59,7 @@ params = {
     # INITIALISATION
     # Set initialisation operator.
     'INITIALISATION': "operators.initialisation.PI_grow",
-    # Set the maximum geneome length for initialisation.
+    # Set the maximum genome length for initialisation.
     'INIT_GENOME_LENGTH': 200,
     # Set the maximum tree depth for initialisation.
     'MAX_INIT_TREE_DEPTH': 10,
@@ -180,7 +180,8 @@ params = {
     'MULTIAGENT': False,
     # Agent Size. Number of agents having their own copy of genetic material
     'AGENT_SIZE': 100,
-    # Interaction Probability. How frequently the agents can interaction with each other
+    # Interaction Probability: how frequently the agents can interaction with
+    # each other
     'INTERACTION_PROBABILITY': 0.5,
 
     # OTHER
