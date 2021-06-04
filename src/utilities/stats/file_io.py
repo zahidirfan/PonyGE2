@@ -126,7 +126,7 @@ def generate_folders_and_files():
 
         if not path.isdir(path_1):
             # Create results folder.
-            makedirs(path_1)
+            makedirs(path_1, exist_ok=True)
 
         # Set file path to include experiment name.
         params['FILE_PATH'] = path.join(path_1, params['EXPERIMENT_NAME'])
@@ -137,12 +137,12 @@ def generate_folders_and_files():
 
     # Generate save folders
     if not path.isdir(params['FILE_PATH']):
-        makedirs(params['FILE_PATH'])
+        makedirs(params['FILE_PATH'], exist_ok=True)
 
     if not path.isdir(path.join(params['FILE_PATH'],
                                 str(params['TIME_STAMP']))):
         makedirs(path.join(params['FILE_PATH'],
-                        str(params['TIME_STAMP'])))
+                        str(params['TIME_STAMP'])), exist_ok=True)
 
     params['FILE_PATH'] = path.join(params['FILE_PATH'],
                                     str(params['TIME_STAMP']))
