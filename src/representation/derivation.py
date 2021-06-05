@@ -114,7 +114,7 @@ def legal_productions(method, depth_limit, root, productions):
     if method == "random":
         # Randomly build a tree.
         
-        if not depth_limit:
+        if depth_limit is None:
             # There is no depth limit, any production choice can be used.
             available = productions
         
@@ -144,7 +144,7 @@ def legal_productions(method, depth_limit, root, productions):
     elif method == "full":
         # Build a "full" tree where every branch extends to the depth limit.
         
-        if not depth_limit:
+        if depth_limit is None:
             # There is no depth limit specified for building a Full tree.
             # Raise an error as a depth limit HAS to be specified here.
             s = "representation.derivation.legal_productions\n" \
