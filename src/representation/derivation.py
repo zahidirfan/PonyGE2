@@ -41,16 +41,10 @@ def generate_tree(tree, genome, output, method, nodes, depth, max_depth,
     # Find which productions can be used based on the derivation method.
     available = legal_productions(method, remaining_depth, tree.root,
                                   productions['choices'])
-    
-    # Randomly pick a production choice.
-    chosen_prod = choice(available)
 
-    # Find the index of the chosen production and set a matching codon based
-    # on that index.
-    prod_index = productions['choices'].index(chosen_prod)
-    codon = randrange(productions['no_choices'],
-                      params['BNF_GRAMMAR'].codon_size,
-                      productions['no_choices']) + prod_index
+    # Randomly pick a production choice and make a codon with it.
+    chosen_prod = choice(available)
+    codon = generate_codon(chosen_prod, productions)
     
     # Set the codon for the current node and append codon to the genome.
     tree.codon = codon
@@ -90,6 +84,30 @@ def generate_tree(tree, genome, output, method, nodes, depth, max_depth,
         max_depth = depth
     
     return genome, output, nodes, depth, max_depth
+
+
+def generate_codon(chosen_prod, productions):
+    """
+    Generate a single codon
+    
+    :param chosen_prod: the specific production to build a codon for
+    :param productions: productions possible from the current root
+    :return: a codon integer
+    
+    """
+
+    # Find the index of the chosen production
+    production_index = productions['choices'].index(chosen_prod)
+
+    # Choose a random offset with guarantee that (offset + production_index) < codon_size
+    offset = randrange(
+        start=0,
+        stop=params['BNF_GRAMMAR'].codon_size - productions['no_choices'] + 1,
+        step=productions['no_choices']
+    )
+
+    codon = offset + production_index
+    return codon
 
 
 def legal_productions(method, depth_limit, root, productions):
@@ -223,15 +241,9 @@ def pi_random_derivation(tree, max_depth):
         available = legal_productions("random", remaining_depth, node.root,
                                       productions['choices'])
 
-        # Randomly pick a production choice.
+        # Randomly pick a production choice and make a codon with it.
         chosen_prod = choice(available)
-
-        # Find the index of the chosen production and set a matching codon
-        # based on that index.
-        prod_index = productions['choices'].index(chosen_prod)
-        codon = randrange(productions['no_choices'],
-                          params['BNF_GRAMMAR'].codon_size,
-                          productions['no_choices']) + prod_index
+        codon = generate_codon(chosen_prod, productions)
 
         # Set the codon for the current node and append codon to the genome.
         node.codon = codon
@@ -329,16 +341,10 @@ def pi_grow(tree, max_depth):
             # Find which productions can be used based on the derivation method.
             available = legal_productions("random", remaining_depth, node.root,
                                           productions['choices'])
-        
-        # Randomly pick a production choice.
-        chosen_prod = choice(available)
 
-        # Find the index of the chosen production and set a matching codon
-        # based on that index.
-        prod_index = productions['choices'].index(chosen_prod)
-        codon = randrange(productions['no_choices'],
-                          params['BNF_GRAMMAR'].codon_size,
-                          productions['no_choices']) + prod_index
+        # Randomly pick a production choice and make a codon with it.
+        chosen_prod = choice(available)
+        codon = generate_codon(chosen_prod, productions)
 
         # Set the codon for the current node and append codon to the genome.
         node.codon = codon
