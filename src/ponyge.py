@@ -16,7 +16,7 @@ from algorithm.parameters import params, set_params
 import sys
 
 
-def main():
+def mane():
     """ Run program """
     set_params(sys.argv[1:])  # exclude the ponyge.py arg itself
 
@@ -28,4 +28,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    mane()
