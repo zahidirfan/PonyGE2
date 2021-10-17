@@ -40,8 +40,9 @@ at https://github.com/PonyGE/PonyGE2/issues/130."""
         # ind doesn't refer to c: no need to optimize
         c = []
         yhat = f(x, c)
-        if y.shape != yhat.shape:
-            raise ValueError(shape_mismatch_txt)
+        if not np.isscalar(yhat):
+            if y.shape != yhat.shape:
+                raise ValueError(shape_mismatch_txt)
         fitness = loss(y, yhat)
         ind.opt_consts = c
         return fitness

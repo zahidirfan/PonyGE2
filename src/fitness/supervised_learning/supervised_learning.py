@@ -89,8 +89,9 @@ at https://github.com/PonyGE/PonyGE2/issues/130."""
                 # phen will refer to x (ie test_in), and possibly to c
                 yhat = eval(phen)
                 assert np.isrealobj(yhat)
-                if y.shape != yhat.shape:
-                    raise ValueError(shape_mismatch_txt)
+                if not np.isscalar(yhat):
+                    if y.shape != yhat.shape:
+                        raise ValueError(shape_mismatch_txt)
 
                 # let's always call the error function with the
                 # true values first, the estimate second
@@ -100,8 +101,9 @@ at https://github.com/PonyGE/PonyGE2/issues/130."""
             # phenotype won't refer to C
             yhat = eval(ind.phenotype)
             assert np.isrealobj(yhat)
-            if y.shape != yhat.shape:
-                raise ValueError(shape_mismatch_txt)
+            if not np.isscalar(yhat):
+                if y.shape != yhat.shape:
+                    raise ValueError(shape_mismatch_txt)
 
             # let's always call the error function with the true
             # values first, the estimate second
