@@ -113,6 +113,45 @@ def seed_individuals(size):
             "Error: No seed individual specified for seed initialisation."
         raise Exception(s)
 
+def rvd(size):
+    """
+    Create a population of the given size using uniform generation of
+    genomes, but discarding (not counting) invalids and duplicate
+    phenotypes.  This procedure is named RVD and described by Nicolau
+    [https://link.springer.com/article/10.1007/s10710-017-9309-9]. It
+    tends to have the effect of creating a better range of tree sizes
+    and depths, compared to simple uniform generation.
+
+    :param size: The size of the required population.
+    :return: A full population of individuals.
+
+    """
+
+    # In a degenerate situation we could fail to generate enough
+    # unique valid individuals. If we keep trying and failing, better
+    # to bail out with a useful error message, and see if the user can
+    # fix it. Nicolau found that the RVD method used approx 6x the
+    # number of tries. We'll choose 30x to be safe.
+    maxtries = size * 30
+    tries = 0
+    population = []
+    phenotypes = set()
+    while len(population) < size:
+        ind = individual.Individual(sample_genome(), None)
+        if ind.invalid or ind.phenotype in phenotypes:
+            tries += 1
+            if tries > maxtries:
+                s = f"""
+maxtries {maxtries} exceeded during rvd initialisation. Suggest
+check whether grammar can generate popsize {size} distinct
+individuals."""
+                raise RuntimeError(s)
+            pass
+        else:
+            phenotypes.add(ind.phenotype)
+            population.append(ind)
+    return population
+
 
 def rhh(size):
     """
