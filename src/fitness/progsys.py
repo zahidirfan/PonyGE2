@@ -1,10 +1,11 @@
 import json
-import subprocess
-import sys
+from subprocess import Popen, PIPE
+from sys import maxsize, executable
 from os import path
 
 from algorithm.parameters import params
 from fitness.base_ff_classes.base_ff import base_ff
+
 
 
 class progsys(base_ff):
@@ -66,10 +67,8 @@ class progsys(base_ff):
     @staticmethod
     def create_eval_process():
         """create separate python process for evaluation"""
-        return subprocess.Popen(['python',
-                                 'scripts/python_script_evaluation.py'],
-                                stdout=subprocess.PIPE,
-                                stdin=subprocess.PIPE)
+        return Popen([sys.executable, 'scripts/python_script_evaluation.py'],
+                     stdout=PIPE, stdin=PIPE)
 
     def format_program(self, individual, header, footer):
         """formats the program by formatting the individual and adding

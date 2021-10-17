@@ -301,6 +301,14 @@ def set_params(command_line_args, create_files=True):
             params['GENERATION_SIZE'] = params['POPULATION_SIZE'] - \
                                         params['ELITE_SIZE']
 
+        if (params['MUTATION_PROBABILITY'] is not None and
+            params['MUTATION_EVENTS'] != 1):
+            s = "operators.mutation.int_flip_per_codon\n" \
+                "Error: mutually exclusive parameters 'MUTATION_PROBABILITY'" \
+                "and 'MUTATION_EVENTS' have been explicitly set.\n" \
+                "Only one of these parameters can be used at a time."
+            raise Exception(s)
+
         # Initialise run lists and folders before we set imports.r
         initialise_run_params(create_files)
 

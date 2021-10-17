@@ -71,20 +71,12 @@ def int_flip_per_codon(ind):
         # Linear mutation cannot be performed on this individual.
         return ind
 
-    # Set mutation probability. Default is 1 over the length of the genome.
-    if params['MUTATION_PROBABILITY'] and params['MUTATION_EVENTS'] == 1:
+    # Set mutation probability. 
+    if params['MUTATION_PROBABILITY'] is not None:
         p_mut = params['MUTATION_PROBABILITY']
-    elif params['MUTATION_PROBABILITY'] and params['MUTATION_EVENTS'] > 1:
-        s = "operators.mutation.int_flip_per_codon\n" \
-            "Error: mutually exclusive parameters for 'MUTATION_PROBABILITY'" \
-            "and 'MUTATION_EVENTS' have been explicitly set.\n" \
-            "       Only one of these parameters can be used at a time with" \
-            "int_flip_per_codon mutation."
-        raise Exception(s)
     else:
-        # Default mutation events per individual is 1. Raising this number
-        # will influence the mutation probability for each codon.
-        p_mut = params['MUTATION_EVENTS'] / eff_length
+        # Default is 1 divided by genome length.
+        p_mut = 1.0 / eff_length
 
     # Mutation probability works per-codon over the portion of the
     # genome as defined by the within_used flag.
