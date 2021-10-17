@@ -1,10 +1,11 @@
+import json
+from subprocess import Popen, PIPE
+from sys import maxsize, executable
+from os import path
+
 from algorithm.parameters import params
 from fitness.base_ff_classes.base_ff import base_ff
 
-from os import path
-from subprocess import Popen, PIPE
-from json import loads, dumps
-from sys import maxsize, executable
 
 
 class progsys(base_ff):
@@ -27,7 +28,7 @@ class progsys(base_ff):
     def __init__(self):
         # Initialise base fitness function class.
         super().__init__()
-        
+
         self.training, self.test, self.embed_header, self.embed_footer = \
             self.get_data(params['DATASET_TRAIN'], params['DATASET_TEST'],
                           params['GRAMMAR_FILE'])
@@ -38,35 +39,35 @@ class progsys(base_ff):
                   "Fitness function only allows sequential evaluation.")
 
     def evaluate(self, ind, **kwargs):
-    
+
         dist = kwargs.get('dist', 'training')
-        
+
         program = self.format_program(ind.phenotype,
                                       self.embed_header, self.embed_footer)
         data = self.training if dist == "training" else self.test
         program = "{}\n{}\n".format(data, program)
-        eval_json = dumps({'script': program, 'timeout': 1.0,
+        eval_json = json.dumps({'script': program, 'timeout': 1.0,
                                 'variables': ['cases', 'caseQuality',
                                               'quality']})
 
-        self.eval.stdin.write((eval_json+'\n').encode())
+        self.eval.stdin.write((eval_json + '\n').encode())
         self.eval.stdin.flush()
         result_json = self.eval.stdout.readline()
 
-        result = loads(result_json.decode())
+        result = json.loads(result_json.decode())
 
         if 'exception' in result and 'JSONDecodeError' in result['exception']:
             self.eval.stdin.close()
             self.eval = self.create_eval_process()
 
         if 'quality' not in result:
-            result['quality'] = maxsize
+            result['quality'] = sys.maxsize
         return result['quality']
 
     @staticmethod
     def create_eval_process():
         """create separate python process for evaluation"""
-        return Popen([executable, 'scripts/python_script_evaluation.py'],
+        return Popen([sys.executable, 'scripts/python_script_evaluation.py'],
                      stdout=PIPE, stdin=PIPE)
 
     def format_program(self, individual, header, footer):
@@ -147,7 +148,7 @@ class progsys(base_ff):
         if insert > 0:
             embed_header = embed_code[:insert]
             embed_footer = embed_code[insert + len(self.INSERTCODE):]
-        with open(train_set, 'r') as train_file,\
+        with open(train_set, 'r') as train_file, \
                 open(test_set, 'r') as test_file:
             return train_file.read(), test_file.read(), \
                    embed_header, embed_footer

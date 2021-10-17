@@ -3,6 +3,7 @@
 
     Copyright (c) 2014 Michael Fenton
     Hereby licensed under the GNU GPL v3."""
+
 from sys import path, executable
 path.append("../src")
 

@@ -18,6 +18,7 @@ import sys
 
 def mane():
     """ Run program """
+    set_params(sys.argv[1:])  # exclude the ponyge.py arg itself
 
     # Run evolution
     individuals = params['SEARCH_LOOP']()
@@ -27,5 +28,4 @@ def mane():
 
 
 if __name__ == "__main__":
-    set_params(sys.argv[1:])  # exclude the ponyge.py arg itself
     mane()
