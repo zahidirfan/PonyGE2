@@ -349,9 +349,13 @@ def set_params(command_line_args, create_files=True):
                     raise Exception(s)
 
         # Parse grammar file and set grammar class.
-        params['BNF_GRAMMAR'] = grammar.Grammar(path.join("..", "grammars",
-                                                          params[
-                                                              'GRAMMAR_FILE']))
+        params['BNF_GRAMMAR'] = grammar.Grammar(
+            path.join("..", "grammars", params['GRAMMAR_FILE']))
+
+        # If OPTIMIZE_CONSTANTS, check that the grammar is suitable
+        if params['OPTIMIZE_CONSTANTS']:
+            if "c[" not in params['BNF_GRAMMAR'].terminals:
+                raise ValueError("Grammar unsuitable for OPTIMIZE_CONSTANTS")
 
         # Population loading for seeding runs (if specified)
         if params['TARGET_SEED_FOLDER']:

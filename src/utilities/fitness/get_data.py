@@ -7,7 +7,8 @@ from algorithm.parameters import params
 def get_Xy_train_test_separate(train_filename, test_filename, skip_header=0):
     """
     Read in training and testing data files, and split each into X
-    (all columns up to last) and y (last column).
+    (all columns up to last) and y (last column). The data files should
+    contain one row per training example.
     
     :param train_filename: The file name of the training dataset.
     :param test_filename: The file name of the testing dataset.
@@ -57,8 +58,8 @@ def get_Xy_train_test_separate(train_filename, test_filename, skip_header=0):
 
     try:
         # Separate out input (X) and output (y) data.
-        train_X = train_Xy[:, :-1].transpose()  # all columns but last
-        train_y = train_Xy[:, -1].transpose()  # last column
+        train_X = train_Xy[:, :-1] # all columns but last
+        train_y = train_Xy[:, -1]  # last column
 
     except IndexError:
         s = "utilities.fitness.get_data.get_Xy_train_test_separate\n" \
@@ -72,8 +73,8 @@ def get_Xy_train_test_separate(train_filename, test_filename, skip_header=0):
                                 delimiter=delimiter)
 
         # Separate out input (X) and output (y) data.
-        test_X = test_Xy[:, :-1].transpose()  # all columns but last
-        test_y = test_Xy[:, -1].transpose()  # last column
+        test_X = test_Xy[:, :-1] # all columns but last
+        test_y = test_Xy[:, -1]  # last column
 
     else:
         test_X, test_y = None, None

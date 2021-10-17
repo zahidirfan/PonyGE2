@@ -35,7 +35,7 @@ class supervised_learning(base_ff):
             get_data(params['DATASET_TRAIN'], params['DATASET_TEST'])
 
         # Find number of variables.
-        self.n_vars = np.shape(self.training_in)[0]
+        self.n_vars = np.shape(self.training_in)[1] # sklearn convention
 
         # Regression/classification-style problems use training and test data.
         if params['DATASET_TEST']:
@@ -68,6 +68,10 @@ class supervised_learning(base_ff):
         else:
             raise ValueError("Unknown dist: " + dist)
 
+        shape_mismatch_txt = """Shape mismatch between y and yhat. Please check
+that your grammar uses the `x[:, 0]` style, not `x[0]`. Please see change
+at https://github.com/PonyGE/PonyGE2/issues/130."""
+
         if params['OPTIMIZE_CONSTANTS']:
             # if we are training, then optimize the constants by
             # gradient descent and save the resulting phenotype
@@ -85,6 +89,8 @@ class supervised_learning(base_ff):
                 # phen will refer to x (ie test_in), and possibly to c
                 yhat = eval(phen)
                 assert np.isrealobj(yhat)
+                if y.shape != yhat.shape:
+                    raise ValueError(shape_mismatch_txt)
 
                 # let's always call the error function with the
                 # true values first, the estimate second
@@ -94,6 +100,8 @@ class supervised_learning(base_ff):
             # phenotype won't refer to C
             yhat = eval(ind.phenotype)
             assert np.isrealobj(yhat)
+            if y.shape != yhat.shape:
+                raise ValueError(shape_mismatch_txt)
 
             # let's always call the error function with the true
             # values first, the estimate second

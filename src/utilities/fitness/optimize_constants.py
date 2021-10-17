@@ -32,10 +32,17 @@ def optimize_constants(x, y, ind):
     # Pre-load the error metric fitness function.
     loss = params['ERROR_METRIC']
 
+    shape_mismatch_txt = """Shape mismatch between y and yhat. Please check
+that your grammar uses the `x[:, 0]` style, not `x[0]`. Please see change
+at https://github.com/PonyGE/PonyGE2/issues/130."""
+
     if n_consts == 0:
         # ind doesn't refer to c: no need to optimize
         c = []
-        fitness = loss(y, f(x, c))
+        yhat = f(x, c)
+        if y.shape != yhat.shape:
+            raise ValueError(shape_mismatch_txt)
+        fitness = loss(y, yhat)
         ind.opt_consts = c
         return fitness
 
@@ -46,7 +53,12 @@ def optimize_constants(x, y, ind):
     # methods to try out.
     init = [0.0] * n_consts
 
-    res = scipy.optimize.minimize(obj, init, method="L-BFGS-B")
+    try:
+        res = scipy.optimize.minimize(obj, init, method="L-BFGS-B")
+    except ValueError:
+        raise ValueError("Error during optimization of constants. " \
+                         "Possible cause: " + shape_mismatch_txt)
+        
 
     # the result is accessed like a dict
     ind.opt_consts = res['x']  # the optimum values of the constants
