@@ -1,6 +1,6 @@
 import json
 from subprocess import Popen, PIPE
-from sys import maxsize, executable
+import sys
 from os import path
 
 from algorithm.parameters import params
