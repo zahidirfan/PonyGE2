@@ -89,7 +89,8 @@ at https://github.com/PonyGE/PonyGE2/issues/130."""
                 # phen will refer to x (ie test_in), and possibly to c
                 yhat = eval(phen)
                 assert np.isrealobj(yhat)
-                if not np.isscalar(yhat):
+                # check whether yhat is a constant or an array (see below).
+                if np.ndim(yhat) != 0: 
                     if y.shape != yhat.shape:
                         raise ValueError(shape_mismatch_txt)
 
@@ -101,7 +102,14 @@ at https://github.com/PonyGE/PonyGE2/issues/130."""
             # phenotype won't refer to C
             yhat = eval(ind.phenotype)
             assert np.isrealobj(yhat)
-            if not np.isscalar(yhat):
+            # Phenotypes that don't refer to x are constants, ie will
+            # return a single value (not an array). That will work
+            # fine when we pass it to our error metric, but our shape
+            # mismatch check (re x[:, 0] v x[0]) will check the
+            # shape. So, only run it when yhat is an array, not when
+            # yhat is a single value. Note np.isscalar doesn't work
+            # here, see help(np.isscalar).
+            if np.ndim(yhat) != 0:
                 if y.shape != yhat.shape:
                     raise ValueError(shape_mismatch_txt)
 
