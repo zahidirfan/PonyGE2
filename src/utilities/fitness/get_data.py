@@ -45,7 +45,7 @@ def get_Xy_train_test_separate(train_filename, test_filename, skip_header=0):
                     break
                 else:
                     print(
-                        "utilities.fitness.get_data.get_Xy_train_test_separate\n"
+                        "Warning (in utilities.fitness.get_data.get_Xy_train_test_separate)\n"
                         "Warning: Dataset delimiter not found. "
                         "Defaulting to whitespace delimiter.")
                     delimiter = " "
