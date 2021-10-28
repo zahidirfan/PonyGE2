@@ -672,7 +672,11 @@ def check_snippets_for_solution():
     # Get the phenotype of the largest snippet
     largest_snippet = get_output(trackers.snippets[biggest_snippet[1]])
 
-    if largest_snippet != params['REVERSE_MAPPING_TARGET']:
+    # FIXME I am stripping whitespace from end of
+    # params['REVERSE_MAPPING_TARGET'] using rstrip(), as this extra
+    # whitespace is preventing the match. See GitHub #137.
+
+    if largest_snippet != params['REVERSE_MAPPING_TARGET'].rstrip():
         # The solution doesn't match the target string.
 
         # Get the location of the phenotype of the largest snippet on the
