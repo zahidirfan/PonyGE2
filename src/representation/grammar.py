@@ -316,7 +316,6 @@ class Grammar(object):
 
         # Get choices of current symbol.
         choices = self.rules[cur_symbol]['choices']
-        nt = self.non_terminals[cur_symbol]
 
         recursive = False
         for choice in choices:
@@ -326,10 +325,10 @@ class Grammar(object):
                 recursive = recursive or recursive_symbol
 
         # Set recursive properties.
-        nt['recursive'] = recursive
+        self.non_terminals[cur_symbol]['recursive'] = recursive
         seen.remove(cur_symbol)
 
-        return nt['recursive']
+        return recursive
 
     def set_arity(self):
         """
